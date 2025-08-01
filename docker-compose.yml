@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ./raypoint-backend
+    ports:
+      - "3001:3001"         # host:container
+    volumes:
+      - ./raypoint-backend:/usr/src/app   # live-reload on code change
+      - /usr/src/app/node_modules
+    environment:
+      - PORT=3001
+
+  mobile:
+    build: ./raypoint-mobile
+    ports:
+      - "8081:8081"      
+      - "19000:19000"     # Expo Go (Android)
+      - "19001:19001"     # Expo DevTools
+      - "19002:19002"     # Metro bundler
+    volumes:
+      - ./raypoint-mobile:/usr/src/app
+      - /usr/src/app/node_modules
+    stdin_open: true         # keeps Expo interactive shell alive
+    tty: true
+    environment:
+      - REACT_NATIVE_PACKAGER_HOSTNAME=localhost
+      - WATCHPACK_POLLING=true
